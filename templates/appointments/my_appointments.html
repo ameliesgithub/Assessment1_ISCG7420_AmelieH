@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>My Appointments</h1>
+
+    {% if user.is_authenticated %}
+        {% for appointment in appointments %}
+            <li>
+                Doctor: {{ appointment.slot.doctor.name }} <br>
+                Date: {{ appointment.slot.date }} <br>
+                Time: {{ appointment.slot.time }}
+
+                <a href="{% url 'edit_appointment' appointment.slot.id %}">Edit</a>
+                <a href="{% url 'cancel_appointment' appointment.slot.id %}">Cancel</a>
+            </li>
+        {% empty %}
+            <p>No appointments found.</p>
+        {% endfor %}
+    {% else %}
+        <p>Please login to view your appointments.</p>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Book Appointment</h1>
+
+    <p>
+        Would you like to book this slot?
+    </p>
+
+    <ul>
+        <li>{{ slot.doctor.name }}</li>
+        <li>{{ slot.date }}</li>
+        <li>{{ slot.time }}</li>
+    </ul>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Confirm Booking</button>
+        <a href="{% url 'slot_list' %}">Cancel</a>
+    </form>
+
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Edit Appointment</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        <label>Date</label>
+        <input type="date" name="date" value="{{ slot.date }}">
+
+        <label>Time</label>
+        <input type="time" name="time" value="{{ slot.time }}">
+
+        <button type="submit">Save Changes</button>
+    </form>
+{% endblock %}
