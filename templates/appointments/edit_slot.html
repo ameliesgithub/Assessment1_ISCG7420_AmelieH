@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Edit Slot</h1>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <label>Doctor:</label>
+        <select name="doctor_id">
+            {% for doctor in doctors %}
+                <option value="{{ doctor.id }}"
+                        {% if doctor.id == slot.doctor.id %}
+                        selected{% endif %}>{{ doctor.name }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <br><br>
+
+        <label>Date:</label>
+        <input type="date" name="date" value="{{ slot.date }}">
+
+        <br><br>
+
+        <label>Time:</label>
+        <input type="time" name="time" value="{{ slot.time }}">
+
+        <br><br>
+
+        <button type="submit">Save Changes</button>
+
+    </form>
+{% endblock %}

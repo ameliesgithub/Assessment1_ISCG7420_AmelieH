@@ -1,7 +1,7 @@
 from django.urls import path, include
 
 from appointments.views import slot_list, book_appointment, index, doctor_list, my_appointments, register, \
-    cancel_appointment, edit_appointment
+    cancel_appointment, edit_appointment, admin_dashboard, create_doctor, edit_doctor, delete_doctor
 
 urlpatterns = [
     path('', index, name='index'),
@@ -12,6 +12,10 @@ urlpatterns = [
     path('cancel/<int:slot_id>/', cancel_appointment, name='cancel_appointment'),
     path('edit/<int:slot_id>/', edit_appointment, name='edit_appointment'),
     path('register/', register, name='register'),
-    path('accounts/', include("django.contrib.auth.urls"))
+    path('accounts/', include("django.contrib.auth.urls")),
+    path('admin-dashboard/', admin_dashboard, name='admin_dashboard'),
+    path('create_doctor/', create_doctor, name='create_doctor'),
+    path('edit_doctor/<int:doctor_id>/', edit_doctor, name='edit_doctor'),
+    path('delete_doctor/<int:doctor_id>/', delete_doctor, name='delete_doctor'),
 
 ]

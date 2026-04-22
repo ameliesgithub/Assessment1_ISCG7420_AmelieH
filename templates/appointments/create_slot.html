@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Create New Slot</h1>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <label>Doctor:</label>
+        <select name="doctor_id">
+            {% for doctor in doctors %}
+                <option value="{{ doctor.id }}">{{ doctor.name }}</option>
+            {% endfor %}
+        </select>
+
+        <br><br>
+
+        <label>Date:</label>
+        <input type="date" name="date">
+
+        <br><br>
+
+        <label>Time:</label>
+        <input type="time" name="time">
+
+        <br><br>
+
+        <button type="submit">Create Slot</button>
+    </form>
+{% endblock %}
