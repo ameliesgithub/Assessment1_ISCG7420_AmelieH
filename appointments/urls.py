@@ -1,6 +1,6 @@
 from django.urls import path, include
 
-from appointments.views import slot_list, book_appointment, index, doctor_list, my_appointments
+from appointments.views import slot_list, book_appointment, index, doctor_list, my_appointments, register
 
 urlpatterns = [
     path('', index, name='index'),
