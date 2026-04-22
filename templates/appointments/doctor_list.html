@@ -3,9 +3,20 @@
 {% block content %}
 
     <h1>Doctor List</h1>
+    {% if user.is_staff %}
+            <a href="{% url 'create_doctor' %}">Create New Doctor</a>
+    {% endif %}
     <ul>
         {% for doctor in doctors %}
             <li>{{ doctor.name }} - {{ doctor.speciality }}</li>
+
+            {% if user.is_staff %}
+                <a href="{% url 'edit_doctor' doctor.id %}">Edit</a>
+                <form method="post" action="{% url 'delete_doctor' doctor.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Delete</button>
+                </form>
+            {% endif %}
         {% endfor %}
     </ul>
 

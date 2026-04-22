@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Admin Dashboard</h1>
+
+    <a href="{% url 'doctor_list' %}">Manage Doctors</a>
+    <a href="{% url 'slot_list' %}">Manage Appointment Slots</a>
+    <a href="{% url 'my_appointments' %}">Manage Appointments</a>
+    <a href="{% url 'my_appointments' %}">Manage Users</a>
+
+{% endblock %}

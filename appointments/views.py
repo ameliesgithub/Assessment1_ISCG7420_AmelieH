@@ -13,6 +13,18 @@ def slot_list(request):
     slots = AppointmentSlot.objects.all()
     return render(request, 'appointments/slot_list.html', {'slots': slots})
 
+def create_slot(request):
+    if not request.user.is_staff:
+        return redirect('index')
+
+    if request.method == 'POST':
+        date = request.POST['date']
+        time = request.POST['time']
+        Doctor.objects.create(name=name, speciality=speciality)
+        return redirect('doctor_list')
+
+    return render(request, 'appointments/create_slot.html')
+
 def doctor_list(request):
     doctors = Doctor.objects.all()
     return render(request, 'appointments/doctor_list.html', {'doctors': doctors})
@@ -50,3 +62,38 @@ def register(request):
 
         return redirect('login')
     return render(request, 'registration/register.html')
+
+def admin_dashboard(request):
+    if not request.user.is_staff:
+        return redirect('index')
+
+    return render(request, 'appointments/admin_dashboard.html')
+
+def create_doctor(request):
+    if not request.user.is_staff:
+        return redirect('index')
+
+    if request.method == 'POST':
+        name = request.POST['name']
+        speciality = request.POST['speciality']
+        Doctor.objects.create(name=name, speciality=speciality)
+        return redirect('doctor_list')
+
+    return render(request, 'appointments/create_doctor.html')
+
+def edit_doctor(request, doctor_id):
+    doctor = Doctor.objects.get(id=doctor_id)
+
+    if request.method == 'POST':
+        doctor.name = request.POST['name']
+        doctor.speciality = request.POST['speciality']
+        doctor.save()
+        return redirect('doctor_list')
+
+    return render(request, 'appointments/edit_doctor.html', {'doctor': doctor})
+
+def delete_doctor(request, doctor_id):
+    if request.method == 'POST':
+        doctor = Doctor.objects.get(id=doctor_id)
+        doctor.delete()
+    return redirect('doctor_list')
