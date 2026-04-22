@@ -51,7 +51,11 @@
                 <li class="nav-item">
                     <a class="nav-link"
                        href="{% url 'my_appointments' %}">
-                        My Appointments
+                        {% if user.is_staff %}
+                            Appointments
+                        {% else %}
+                            My Appointments
+                        {% endif %}
                     </a>
                 </li>
                 <li class="nav-item">

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Patient User List</h1>
+
+    <ul>
+        {% for u in users %}
+            <li>
+                Username: {{ user.username }}<br>
+                First Name: {{ user.first_name }}<br>
+                Last Name: {{ user.last_name }}<br>
+                Email: {{ user.email }}
+
+                <a href="{% url 'edit_user' user.id %}">Edit</a>
+
+                {%  if u != request.user %}
+                    <a href="{% url 'delete_user' user.id %}">Delete</a>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

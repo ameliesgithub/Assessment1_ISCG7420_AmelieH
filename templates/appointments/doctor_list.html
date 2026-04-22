@@ -4,7 +4,7 @@
 
     <h1>Doctor List</h1>
     {% if user.is_staff %}
-            <a href="{% url 'create_doctor' %}">Create New Doctor</a>
+            <button type="button" class="btn btn-primary">Create New Doctor</button>
     {% endif %}
     <ul>
         {% for doctor in doctors %}

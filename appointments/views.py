@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 
 from appointments.models import AppointmentSlot, Appointment, Doctor
@@ -7,8 +8,11 @@ from appointments.utils import create_user
 
 # Create your views here.
 def index(request):
-    doctors = Doctor.objects.all()
-    return render(request, 'appointments/index.html', {'doctors': doctors})
+    if request.user.is_authenticated and request.user.is_staff:
+        return redirect('admin_dashboard')
+    else:
+        doctors = Doctor.objects.all()
+        return render(request, 'appointments/index.html', {'doctors': doctors})
 def slot_list(request):
     slots = AppointmentSlot.objects.all()
     return render(request, 'appointments/slot_list.html', {'slots': slots})
@@ -135,3 +139,37 @@ def delete_doctor(request, doctor_id):
     doctor = Doctor.objects.get(doctor_id=doctor_id)
     doctor.delete()
     return redirect('doctor_list')
+
+def user_list(request):
+    if not request.user.is_staff:
+        return redirect('index')
+
+    users = User.objects.all()
+    return render(request, 'appointments/user_list.html', {'users': users})
+
+def edit_user(request, user_id):
+    if not request.user.is_staff:
+        return redirect('index')
+
+    user = User.objects.get(id=user_id)
+
+    if request.method == 'POST':
+        user.username = request.POST['username']
+        user.first_name = request.POST['first_name']
+        user.last_name = request.POST['last_name']
+        user.email = request.POST['email']
+        user.save()
+        return redirect('user_list')
+
+    return render(request, 'appointments/edit_user.html', {'user': user})
+
+def delete_user(request, user_id):
+    if not request.user.is_staff:
+        return redirect('index')
+
+    user = User.objects.get(id=user_id)
+    if user == request.user:
+        return redirect('user_list')
+    else:
+        user.delete()
+    return redirect('user_list')
