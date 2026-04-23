@@ -6,17 +6,22 @@
     <ul>
         {% for u in users %}
             <li>
-                Username: {{ user.username }}<br>
-                First Name: {{ user.first_name }}<br>
-                Last Name: {{ user.last_name }}<br>
-                Email: {{ user.email }}
+                Username: {{ u.username }}<br>
+                First Name: {{ u.first_name }}<br>
+                Last Name: {{ u.last_name }}<br>
+                Email: {{ u.email }}
 
-                <a href="{% url 'edit_user' user.id %}">Edit</a>
+                <br>
+                <a href="{% url 'edit_user' u.id %}" class="btn btn-primary">Edit</a>
 
                 {%  if u != request.user %}
-                    <a href="{% url 'delete_user' user.id %}">Delete</a>
+                    <form method="post" action="{% url 'delete_user' u.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
                 {% endif %}
             </li>
+            <br>
         {% endfor %}
     </ul>
 

@@ -3,9 +3,46 @@
 {% block content %}
     <h1>Admin Dashboard</h1>
 
-    <button type="button" class="btn btn-primary">Manage Doctors</button>
-    <button type="button" class="btn btn-primary">Manage Appointment Slots</button>
-    <button type="button" class="btn btn-primary">Manage Appointments</button>
-    <button type="button" class="btn btn-primary">Manage Users</button>
+    <div class="section">
+
+        <h5>Appointment Slots</h5>
+        <p>Manage appointment time slots for doctors.</p>
+
+        <a href="{% url 'slot_list' %}" class="btn btn-primary">Manage Appointment Slots</a>
+        <a href="{% url 'create_slot' %}" class="btn btn-success">Create New Slot</a>
+
+    </div>
+
+    <br>
+
+    <div class="section">
+
+        <h5>Doctors</h5>
+        <p>View, create, edit or delete doctors.</p>
+
+        <a href="{% url 'doctor_list' %}" class="btn btn-primary">Manage Doctors</a>
+        <a href="{% url 'create_doctor' %}" class="btn btn-success">Create New Doctor</a>
+    </div>
+
+    <br>
+
+    <div class="section">
+
+        <h5>Appointments</h5>
+        <p>View all or cancel booked appointments.</p>
+
+        <a href="{% url 'my_appointments' %}" class="btn btn-primary">Manage Appointments</a>
+
+    </div>
+
+    <br>
+
+    <div class="section">
+
+        <h5>Users</h5>
+        <p>Manage all registered users in the system.</p>
+
+        <a href="{% url 'user_list' %}" class="btn btn-primary">Manage Users</a>
+    </div>
 
 {% endblock %}

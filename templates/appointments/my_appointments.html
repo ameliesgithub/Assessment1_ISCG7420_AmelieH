@@ -7,20 +7,25 @@
     {% endif %}
 
     {% if user.is_authenticated %}
+        <ul>
         {% for appointment in appointments %}
-            <ul>
             <li>
                 Doctor: {{ appointment.slot.doctor.name }} <br>
                 Date: {{ appointment.slot.date }} <br>
-                Time: {{ appointment.slot.time }}
+                Time: {{ appointment.slot.time }} <br>
+                {% if user.is_staff %}
+                    Patient: {{ appointment.user }}
+                {% endif %}
 
-                <a href="{% url 'edit_appointment' appointment.id %}">Edit</a>
-                <a href="{% url 'cancel_appointment' appointment.id %}">Cancel</a>
+                <br>
+
+                <a href="{% url 'edit_appointment' appointment.id %}" class="btn btn-primary">Edit</a>
+                <a href="{% url 'cancel_appointment' appointment.id %}" class="btn btn-danger">Cancel</a>
             </li>
-            </ul>
         {% empty %}
             <p>No appointments found.</p>
         {% endfor %}
+        </ul>
     {% else %}
         <p>Please login to view your appointments.</p>
     {% endif %}

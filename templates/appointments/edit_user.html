@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Edit User</h1>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <label>Username:</label>
+        <input type="text" name="username" value="{{ user.username }}"><br><br>
+
+        <label>First Name:</label>
+        <input type="text" name="first_name" value="{{ user.first_name }}"><br><br>
+
+        <label>Last Name:</label>
+        <input type="text" name="last_name" value="{{ user.last_name }}"><br><br>
+
+        <label>Email:</label>
+        <input type="email" name="email" value="{{ user.email }}"><br><br>
+
+        <label>Is Staff:</label>
+        <input type="checkbox" name="is_staff"
+        {% if user.is_staff %}checked{% endif %}
+        ><br><br>
+
+        <button type="submit">Save Changes</button>
+    </form>
+{% endblock %}

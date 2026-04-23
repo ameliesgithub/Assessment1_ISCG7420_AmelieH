@@ -15,8 +15,8 @@
 
     <form method="post">
         {% csrf_token %}
-        <button type="submit">Confirm Booking</button>
-        <a href="{% url 'slot_list' %}">Cancel</a>
+        <button type="submit" class="btn btn-success">Confirm Booking</button>
+        <a href="{% url 'slot_list' %}" class="btn btn-danger">Cancel</a>
     </form>
 
 {% endblock %}

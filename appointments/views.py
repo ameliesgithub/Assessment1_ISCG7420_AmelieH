@@ -1,4 +1,3 @@
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 
@@ -48,7 +47,7 @@ def edit_slot(request, slot_id):
 
         return redirect('slot_list')
 
-    return render(request, 'appointments/edit_slot.html', {'slot': slot, "doctors": Doctor.objects.all()})
+    return render(request, 'appointments/edit_slot.html', {'slot': slot, 'doctors': Doctor.objects.all()})
 
 def delete_slot(request, slot_id):
     if not request.user.is_staff:
@@ -77,18 +76,36 @@ def book_appointment(request, slot_id):
     if not request.user.is_authenticated:
         return redirect('login')
 
+    slot = AppointmentSlot.objects.get(id=slot_id)
+
     if request.method == "POST":
+        if Appointment.objects.filter(slot=slot).exists():
+            return redirect('slot_list')
+
         Appointment.objects.create(user=request.user, slot=AppointmentSlot.objects.get(id=slot_id))
         return redirect('my_appointments')
 
     return render(request, 'appointments/book_appointment.html', {'slot': AppointmentSlot.objects.get(id=slot_id)})
 
-def cancel_appointment(request, slot_id):
-    Appointment.objects.filter(user=request.user, slot=AppointmentSlot.objects.get(id=slot_id)).delete()
+def cancel_appointment(request, appointment_id):
+    appointment = Appointment.objects.get(id=appointment_id)
+    appointment.delete()
     return redirect('my_appointments')
 
-def edit_appointment(request, slot_id):
-    return render(request, 'appointments/edit_appointment.html', {'slot': AppointmentSlot.objects.get(id=slot_id)})
+def edit_appointment(request, appointment_id):
+    appointment = Appointment.objects.get(id=appointment_id)
+
+    if request.method == "POST":
+        new_slot = AppointmentSlot.objects.get(id=request.POST['slot_id'])
+
+        if Appointment.objects.filter(slot=new_slot).exclude(id=appointment.id):
+            return redirect('my_appointments')
+
+        appointment.slot = new_slot
+        appointment.save()
+        return redirect('my_appointments')
+
+    return render(request, 'appointments/edit_appointment.html', {'appointment': appointment, 'slots': AppointmentSlot.objects.all()})
 
 def register(request):
     if request.method == 'POST':
@@ -136,8 +153,11 @@ def delete_doctor(request, doctor_id):
     if not request.user.is_staff:
         return redirect('index')
 
-    doctor = Doctor.objects.get(doctor_id=doctor_id)
-    doctor.delete()
+    doctor = Doctor.objects.get(id=doctor_id)
+
+    if request.method == "POST":
+        doctor.delete()
+
     return redirect('doctor_list')
 
 def user_list(request):

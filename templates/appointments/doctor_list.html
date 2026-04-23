@@ -4,15 +4,20 @@
 
     <h1>Doctor List</h1>
     {% if user.is_staff %}
-            <button type="button" class="btn btn-primary">Create New Doctor</button>
+        <a href="{% url 'create_doctor' %}" class="btn btn-success">
+            Create New Doctor</a>
+        <br>
     {% endif %}
     <ul>
         {% for doctor in doctors %}
             <li>{{ doctor.name }} - {{ doctor.speciality }}</li>
 
             {% if user.is_staff %}
-                <a href="{% url 'edit_doctor' doctor.id %}">Edit</a>
-                <a href="{% url 'delete_doctor' doctor.id %}">Delete</a>
+                <a href="{% url 'edit_doctor' doctor.id %}" class="btn btn-primary">Edit</a>
+                <form method="post" action="{% url 'delete_doctor' doctor.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
             {% endif %}
         {% endfor %}
     </ul>

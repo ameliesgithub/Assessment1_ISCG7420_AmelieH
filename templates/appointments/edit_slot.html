@@ -19,16 +19,16 @@
         <br><br>
 
         <label>Date:</label>
-        <input type="date" name="date" value="{{ slot.date }}">
+        <input type="date" name="date" value="{{ slot.date|date:'Y-m-d' }}">
 
         <br><br>
 
         <label>Time:</label>
-        <input type="time" name="time" value="{{ slot.time }}">
+        <input type="time" name="time" value="{{ slot.time|time:'H:i' }}">
 
         <br><br>
 
-        <button type="submit">Save Changes</button>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
 
     </form>
 {% endblock %}
