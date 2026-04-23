@@ -59,7 +59,12 @@ def delete_slot(request, slot_id):
 
 def doctor_list(request):
     doctors = Doctor.objects.all()
-    return render(request, 'appointments/doctor_list.html', {'doctors': doctors})
+    slots = AppointmentSlot.objects.all()
+
+    return render(request, 'appointments/doctor_list.html', {
+        'doctors': doctors,
+        'slots': slots
+    })
 
 def my_appointments(request):
     if not request.user.is_authenticated:
@@ -77,6 +82,9 @@ def book_appointment(request, slot_id):
         return redirect('login')
 
     slot = AppointmentSlot.objects.get(id=slot_id)
+
+    if Appointment.objects.filter(slot=slot).exists():
+        return redirect('slot_list')
 
     if request.method == "POST":
         if Appointment.objects.filter(slot=slot).exists():
@@ -139,6 +147,9 @@ def create_doctor(request):
     return render(request, 'appointments/create_doctor.html')
 
 def edit_doctor(request, doctor_id):
+    if not request.user.is_staff:
+        return redirect('index')
+
     doctor = Doctor.objects.get(id=doctor_id)
 
     if request.method == 'POST':

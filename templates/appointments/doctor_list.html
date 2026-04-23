@@ -3,14 +3,28 @@
 {% block content %}
 
     <h1>Doctor List</h1>
+
     {% if user.is_staff %}
         <a href="{% url 'create_doctor' %}" class="btn btn-success">
             Create New Doctor</a>
         <br>
     {% endif %}
+
     <ul>
         {% for doctor in doctors %}
-            <li>{{ doctor.name }} - {{ doctor.speciality }}</li>
+            <li><strong>{{ doctor.name }} - {{ doctor.speciality }}</strong></li>
+
+            <u>Consultation Schedule:</u>
+
+            <ul>
+                {% for slot in doctor.appointmentslot_set.all %}
+                    {% if slot.doctor.id == doctor.id %}
+                        <li>{{ slot.date }} - {{ slot.time }}</li>
+                    {% endif %}
+                {% empty %}
+                    <li>No slots available.</li>
+                {% endfor %}
+            </ul>
 
             {% if user.is_staff %}
                 <a href="{% url 'edit_doctor' doctor.id %}" class="btn btn-primary">Edit</a>
@@ -19,6 +33,7 @@
                     <button type="submit" class="btn btn-danger">Delete</button>
                 </form>
             {% endif %}
+            <br>
         {% endfor %}
     </ul>
 

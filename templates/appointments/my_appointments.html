@@ -17,8 +17,6 @@
                     Patient: {{ appointment.user }}
                 {% endif %}
 
-                <br>
-
                 <a href="{% url 'edit_appointment' appointment.id %}" class="btn btn-primary">Edit</a>
                 <a href="{% url 'cancel_appointment' appointment.id %}" class="btn btn-danger">Cancel</a>
             </li>
