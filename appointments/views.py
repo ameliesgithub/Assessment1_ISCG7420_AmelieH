@@ -113,7 +113,10 @@ def edit_appointment(request, appointment_id):
         appointment.save()
         return redirect('my_appointments')
 
-    return render(request, 'appointments/edit_appointment.html', {'appointment': appointment, 'slots': AppointmentSlot.objects.all()})
+    booked_slots = Appointment.objects.exclude(id=appointment.id).values_list('slot_id', flat=True)
+    available_slots = AppointmentSlot.objects.exclude(id__in=booked_slots)
+
+    return render(request, 'appointments/edit_appointment.html', {'appointment': appointment, 'slots': available_slots})
 
 def register(request):
     if request.method == 'POST':
